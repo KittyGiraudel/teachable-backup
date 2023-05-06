@@ -1,0 +1,24 @@
+{
+  "name": "teachable-backup",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "index.mjs",
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "api": "^5.0.8",
+    "chalk": "^5.2.0",
+    "dotenv": "^16.0.3",
+    "fs-extra": "^11.1.1",
+    "nodejs-file-downloader": "^4.11.1",
+    "p-queue": "^7.3.4",
+    "throttled-queue": "^2.1.4"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8"
+  }
+}
