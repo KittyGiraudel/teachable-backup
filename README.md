@@ -9,7 +9,7 @@ This is a script to backup a [Teachable](https://docs.teachable.com/) school usi
 git clone https://github.com/KittyGiraudel/teachable-backup
 cd teachable-backup
 npm install
-node index.mjs
+npm start
 ```
 
 Note that this script expects Node.js v18+. Consider using [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
