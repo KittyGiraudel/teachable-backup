@@ -42,20 +42,34 @@ CACHE_DIR=.dist
 It creates a folder structure like the one below. Paths marked with a question mark indicates they may or may not exist depending on the data.
 
 ```sh
-.dist/
-|– courses.json
-|  # This sub-structure appears once per course
-|– {course_id}/
-    |– course.json
-    |– {course_thumbnail}?
-    |– sections/
-        | # This sub-structure appears once per section
-        |– {section_id}/
-            |– lectures/
-                | # This sub-structure appears once per lecture
-                |– {lecture_id}/
-                    |– lecture.json
-                    |– {attachment_file}?
+{CACHE_DIR}/
+|
+|– courses/
+|  |– courses.json
+|  |  # This sub-structure appears once per course
+|  |– {course_id}/
+|     |– course.json
+|     |– {course_thumbnail}?
+|     |– sections/
+|        | # This sub-structure appears once per section
+|        |– {section_id}/
+|           |– lectures/
+|              | # This sub-structure appears once per lecture
+|              |– {lecture_id}/
+|                 |– lecture.json
+|                 |– {attachment_file}?
+|
+|– users/
+|  |– users.json
+|  |  # This sub-structure appears once per user
+|  |– {user_id}/
+|     |– user.json
+|
+|– pricingPlans/
+   |– pricingPlans.json
+   |  # This sub-structure appears once per pricing plan
+   |– {pricing_plan_id}/
+      |– pricingPlan.json
 ```
 
 ## Rate limiting
@@ -70,4 +84,4 @@ As mentioned in the [Configuration](#configuration) section, the `FILE_CONCURREN
 
 When enabled, attachements are downloaded somewhat sequentially, using [p-queue](https://github.com/sindresorhus/p-queue) to restrict concurrency (to the given value). Feel free to tweak the number, but know that too many connections might cause some requests to fail.
 
-It is recommended to run the script a first time without files to back up all courses and lectures as JSON rapidly, and then a second time with files to back up attachments.
+It is recommended to run the script a first time without files to back up all users, pricing plans, courses and lectures as JSON rapidly, and then a second time with files to back up attachments.

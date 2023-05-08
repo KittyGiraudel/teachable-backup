@@ -6,8 +6,42 @@ const sdk = api('@teachable/v1.1#3vgls24wlh9fbo7a')
 
 sdk.auth(API_KEY)
 
+export const getPricingPlans = () => {
+  return readOrFetchData(
+    `${CACHE_DIR}/pricingPlans/pricingPlans.json`,
+    async () => {
+      const { data } = await sdk.listPricingPlans()
+      return data.pricing_plans
+    }
+  )
+}
+
+export const getPricingPlan = id => {
+  return readOrFetchData(
+    `${CACHE_DIR}/pricingPlans/${id}/pricingPlan.json`,
+    async () => {
+      const { data } = await sdk.showPricingPlans({ pricing_plan_id: id })
+      return data.pricing_plan
+    }
+  )
+}
+
+export const getUsers = () => {
+  return readOrFetchData(`${CACHE_DIR}/users/users.json`, async () => {
+    const { data } = await sdk.listUsers()
+    return data.users
+  })
+}
+
+export const getUser = id => {
+  return readOrFetchData(`${CACHE_DIR}/users/${id}/user.json`, async () => {
+    const { data } = await sdk.showUser({ user_id: id })
+    return data
+  })
+}
+
 export const getCourses = () => {
-  return readOrFetchData(`${CACHE_DIR}/courses.json`, async () => {
+  return readOrFetchData(`${CACHE_DIR}/courses/courses.json`, async () => {
     const { data } = await sdk.listCourses()
     return data.courses
   })

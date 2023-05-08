@@ -1,19 +1,44 @@
 import { map } from './utils.mjs'
-import { getCourses, getCourse, getLecture } from './api.mjs'
+import {
+  getCourses,
+  getCourse,
+  getLecture,
+  getUsers,
+  getUser,
+  getPricingPlans,
+  getPricingPlan,
+} from './api.mjs'
 
-//  1. Get all the courses.
-const courses = await getCourses()
+async function exportCourses() {
+  const courses = await getCourses()
 
-await map(courses, async ({ id: courseId }) => {
-  //  2. For each course entry, get the full course object.
-  const course = await getCourse(courseId)
-  //  3. For each course object, get all the lecture entries.
-  const lectures = course.lecture_sections.flatMap(section =>
-    section.lectures.map(({ id }) => ({ sectionId: section.id, lectureId: id }))
-  )
+  await map(courses, async ({ id: courseId }) => {
+    const course = await getCourse(courseId)
+    const lectures = course.lecture_sections.flatMap(section =>
+      section.lectures.map(({ id }) => ({
+        sectionId: section.id,
+        lectureId: id,
+      }))
+    )
 
-  await map(lectures, async ({ sectionId, lectureId }) => {
-    //  4. For each lecture entry, get the full lecture object.
-    await getLecture(courseId, sectionId, lectureId)
+    await map(lectures, async ({ sectionId, lectureId }) => {
+      await getLecture(courseId, sectionId, lectureId)
+    })
   })
-})
+}
+
+async function exportUsers() {
+  await map(await getUsers(), async ({ id: userId }) => {
+    await getUser(userId)
+  })
+}
+
+async function exportPricingPlans() {
+  await map(await getPricingPlans(), async ({ id: pricingPlanId }) => {
+    await getPricingPlan(pricingPlanId)
+  })
+}
+
+await exportUsers()
+await exportPricingPlans()
+await exportCourses()
