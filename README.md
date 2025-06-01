@@ -14,6 +14,10 @@ npm start
 
 Note that this script expects Node.js v18+. Consider using [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
 
+## Devcontainer usage
+
+Update your `.env` file. In the devcontainer in VScode, run `npm start`.
+
 ## Configuration
 
 All configuration options can be passed via a `.env` file at the root of the repository, or directly when executing the script.
