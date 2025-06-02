@@ -14,6 +14,10 @@ npm start
 
 Note that this script expects Node.js v18+. Consider using [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
 
+## Devcontainer usage
+
+Update your `.env` file. In the devcontainer in VScode, run `npm start`.
+
 ## Configuration
 
 All configuration options can be passed via a `.env` file at the root of the repository, or directly when executing the script.
@@ -85,3 +89,9 @@ As mentioned in the [Configuration](#configuration) section, the `FILE_CONCURREN
 When enabled, attachements are downloaded somewhat sequentially, using [p-queue](https://github.com/sindresorhus/p-queue) to restrict concurrency (to the given value). Feel free to tweak the number, but know that too many connections might cause some requests to fail.
 
 It is recommended to run the script a first time without files to back up all users, pricing plans, courses and lectures as JSON rapidly, and then a second time with files to back up attachments.
+
+## Limitations
+
+Does not download comments in lectures.
+
+Seems to balk at downloading draft units, though files in those are actually downloaded.
