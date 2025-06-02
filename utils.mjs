@@ -96,7 +96,7 @@ export const downloadFile = async (url, path = '.') => {
     log(fullPath, chalk.green('download succeeded'))
   } catch (error) {
     if (error.code !== 'ERR_REQUEST_CANCELLED') {
-      log(fullPath, chalk.red('download failed'), chalk.blue(error.code))
+      log(chalk.red(`${fullPath}: download failed`), chalk.blue(error.code))
     }
   }
 }
