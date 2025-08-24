@@ -4,14 +4,14 @@ import Downloader from 'nodejs-file-downloader'
 import ora from 'ora'
 import PQueue from 'p-queue'
 import throttledQueue from 'throttled-queue'
-import { VERBOSE, CACHE, FILE_CONCURRENCY } from './config.mjs'
+import { settings } from './config.mjs'
 
 const throttle = throttledQueue(1, 1000)
-const downloadQueue = FILE_CONCURRENCY
-  ? new PQueue({ concurrency: FILE_CONCURRENCY })
+const downloadQueue = settings.FILE_CONCURRENCY
+  ? new PQueue({ concurrency: settings.FILE_CONCURRENCY })
   : null
 
-export const log = (...args) => VERBOSE && console.log(...args)
+export const log = (...args) => settings.VERBOSE && console.log(...args)
 export const map = (array, mapper) => Promise.all(array.map(mapper))
 
 const writeToCache = async (path, data) => {
@@ -20,7 +20,7 @@ const writeToCache = async (path, data) => {
 }
 
 const readFromCache = async path => {
-  if (!CACHE) {
+  if (!settings.CACHE) {
     log(path, chalk.yellow('cache skipped'))
     return null
   }
@@ -67,7 +67,7 @@ export const downloadFile = async (url, path = '.') => {
 
   let fullPath = path
 
-  const spinner = ora({ text: chalk.grey(fullPath), isSilent: !VERBOSE })
+  const spinner = ora({ text: chalk.grey(fullPath), isSilent: !settings.VERBOSE })
   const downloader = new Downloader({
     url,
     directory: path,
@@ -75,12 +75,12 @@ export const downloadFile = async (url, path = '.') => {
     onBeforeSave: async deducedName => {
       fullPath = path + '/' + deducedName
 
-      if (CACHE && (await pathExists(fullPath))) {
+      if (settings.CACHE && (await pathExists(fullPath))) {
         downloader.cancel()
         log(fullPath, chalk.blue('cache hit'))
       } else {
         spinner.start()
-        log(fullPath, chalk.red(CACHE ? 'cache miss' : 'cache skipped'))
+        log(fullPath, chalk.red(settings.CACHE ? 'cache miss' : 'cache skipped'))
       }
     },
     onProgress: function (percentage, _, remainingBytes) {
@@ -96,7 +96,7 @@ export const downloadFile = async (url, path = '.') => {
     log(fullPath, chalk.green('download succeeded'))
   } catch (error) {
     if (error.code !== 'ERR_REQUEST_CANCELLED') {
-      log(fullPath, chalk.red('download failed'), chalk.blue(error.code))
+      log(chalk.red(`Download failed for ${fullPath} (URL: ${url})`), error.code, error.statusCode)
     }
   }
 }
